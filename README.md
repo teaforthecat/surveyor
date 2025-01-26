@@ -42,3 +42,26 @@ echo "Rails.application.config.dartsass.builds = {\n  'active_admin.scss' => 'ac
 echo "sass: bin/rails dartsass:watch" >> Procfile.dev
 ```
 
+
+``` sh
+rails g devise User
+rails db:migrate
+rails g active_admin:resource User # so Admins can create them
+rails g model Survey name # does not get scaffolding - only created by Admins
+rails db:migrate # ActiveAdmin needs to table for introspection
+rails g active_admin:resource Survey
+
+rails g Assignment user:references survey:references
+rails db:migrate 
+# does not get a whole ActiveAdmin Resource (yet) because Assignment is a fancy join table
+rails g migration add_dates_to_assignments assigned_at:datetime completed_at:datetime deadline_at:datetime
+
+rails g model Question content:text position:integer survey:references
+rails db:migrate
+rails g active_admin:resource Question
+
+rails g scaffold Answer user:references question:references assignment:references content:text 
+rails db:migrate
+# does not have an ActiveAdmin resource because Answers come from Users, not Admins
+
+```
