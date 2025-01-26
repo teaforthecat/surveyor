@@ -1,24 +1,44 @@
-# README
+# Fast Prototype Template
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is an initial setup of a Rails app with ActiveAdmin.
 
-Things you may want to cover:
+It has chosen these libraries over others:
 
-* Ruby version
+- PostgreSQL
+- Tailwind
+- Haml 
+- RSpec
+ 
+From here, the idea is to start building an app with Rails generators, such as:
 
-* System dependencies
+``` sh
+rails g model {DomainEntity} attribute attribute 
+rails g activeadmin:resource {DomainEntity} 
+```
 
-* Configuration
+These are the commands that created this template:
 
-* Database creation
+``` sh
 
-* Database initialization
 
-* How to run the test suite
+rails new {name} -d postgresql -T -c tailwind 
+cd {name}
+bundle add haml-rails html2haml
+rails generate haml:application_layout convert
+rm app/views/layouts/application.html.erb
+bundle remove html2haml
+bundle add rspec-rails
+rails g rspec:install
+rails db:setup
+bundle add activeadmin devise draper pundit
+rails g active_admin:install
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Then, to address the issue of Sass from ActiveAdmin not being compiled by Rails 8, this was added:
 
-* Deployment instructions
+``` sh
+bundle add dartsass-rails
+echo "Rails.application.config.dartsass.builds = {\n  'active_admin.scss' => 'active_admin.css'\n}" > config/initializers/dartsass.rb
+echo "sass: bin/rails dartsass:watch" >> Procfile.dev
+```
 
-* ...
