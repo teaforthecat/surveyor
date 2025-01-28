@@ -5,7 +5,7 @@ ActiveAdmin.register Question do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :content, :position, :survey_id
+  permit_params :content, :position, :survey_id
   #
   # or
   #
